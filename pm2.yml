@@ -1,0 +1,3 @@
+apps:
+  - script: './dist/shared/infra/http/server.js'
+    name: 'pm2-server'

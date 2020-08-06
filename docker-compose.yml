@@ -1,0 +1,35 @@
+version: "3"
+
+networks:
+  app-tier:
+    driver: bridge
+
+volumes:
+  postgres_data: {}
+
+services:
+  server:
+    container_name: "server"
+    env_file: .env
+    networks:
+      - app-tier
+    depends_on:
+      - db-postgres
+      - cache-redis
+
+  db-postgres:
+    build: postgres
+    container_name: "db-postgres"
+    env_file: .env
+    networks:
+      - app-tier
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/backups:/backups
+
+  cache-redis:
+    image: redis:alpine
+    container_name: "cache-redis"
+    env_file: .env
+    networks:
+      - app-tier

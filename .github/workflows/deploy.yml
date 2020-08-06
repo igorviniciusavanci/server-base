@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.1
+      with: 
+        node-version: 12.x
+    
+    - name: Yarn cache directory
+      id: yarn-cache-dir
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Yarn cache
+      uses: actions/cache@v1
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+          
+    - name: Install dependencies
+      run: yarn 
+      
+    - name: Run build
+      run: yarn build
+      
+    - name: copy files to Digital Ocean
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        source: ".,!node_modules"
+        target: "app"
+        strip_components: 1
+    
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd ~/app
+          docker-compose -f docker-compose.yml -f docker-compose.production.yml stop
+          docker-compose -f docker-compose.yml -f docker-compose.production.yml build
+          docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
+      

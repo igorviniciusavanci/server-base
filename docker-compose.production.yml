@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  server-avanci:
+    build:
+      context: .
+    working_dir: /code
+    command: "pm2-runtime shared/infra/http/server.js"
+
+  migration:
+    build:
+      context: .
+    env_file: .env
+    networks:
+      - app-tier
+    depends_on:
+      - db-postgres
+    working_dir: /code
+    command: "node node_modules/typeorm/cli.js migration:run"
+
+  cache-redis:
+    env_file: .env
+    restart: unless-stopped
+
+  db-postgres:
+    env_file: .env
+    restart: unless-stopped
