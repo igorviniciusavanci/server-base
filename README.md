@@ -17,17 +17,17 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/igorviniciusavanci/server-base.svg)](https://github.com/igorviniciusavanci/server-base/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/igorviniciusavanci/server-base.svg)](https://github.com/igorviniciusavanci/server-base/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
 
 ---
 
-<p align="center"> 
+<p align="center">
 Este é um <i>boilerplate</i> opinativo para APIs da web em Node focado na separação de preocupações e escalabilidade.
-    <br> 
+    <br>
 </p>
 
 ## 📝 Índice
@@ -53,22 +53,15 @@ Essas instruções fornecerão uma cópia do projeto em execução na sua máqui
 
 O que você precisa para instalar o software:
 
-- [NodeJS](https://nodejs.org/en/)
 - [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
+- Crie um arquivo .env na raiz do projeto. Existe o arquivo ".env.example" para exemplo. Você pode apenas copia-lo e renomear o arquivo.
 
 
 ### Instalando
 
-Abra o terminal na pasta do projeto e execute o seguinte comando:
-
-```SHELL
-npm install
-```
-
-Crie um arquivo .env na raiz do projeto. Existe o arquivo ".env.example" para exemplo. Você pode apenas copia-lo e renomear o arquivo.
-
-Garante que o serviço do docker esteja funcionando e execute:
+Construa os containers:
 
 ```SHELL
 docker-compose build
